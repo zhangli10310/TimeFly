@@ -1,1 +1,3 @@
 # TimeFly
+
+![pic](./cut.png)
