@@ -3,20 +3,20 @@ package com.zl.timefly
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
-import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
 import android.os.HandlerThread
+import android.support.v7.app.AppCompatActivity
 import android.text.Html
+import android.util.Log
 import android.view.MotionEvent
 import com.dingmouren.colorpicker.ColorPickerDialog
 import com.dingmouren.colorpicker.OnColorPickerListener
+import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,6 +43,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        floatingActionBar.setOnClickListener {
+            startActivity(Intent(this, DocumentActivity::class.java))
+        }
 
         val sp = getSharedPreferences("birth", Context.MODE_PRIVATE)
         date = sp.getString("birthday", "${cal.get(Calendar.YEAR)}.${cal.get(Calendar.MONTH) + 1}.${cal.get(Calendar.DAY_OF_MONTH)}")
@@ -153,7 +157,7 @@ class MainActivity : AppCompatActivity() {
     private fun init(sp: SharedPreferences) {
         datePicker = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             if (view.isShown) {
-                date = "${year}.${month + 1}.${dayOfMonth}"
+                date = "$year.${month + 1}.$dayOfMonth"
                 if (show) {
                     birthday.text = date
                 } else {
@@ -184,8 +188,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun refresh() {
 
-        val dateFormat = SimpleDateFormat("yyyy.MM.ddHH:mm", Locale.getDefault())
-        val d = dateFormat.parse(date + time)
+        val dateFormat = SimpleDateFormat("yyyy.MM.dd_HH:mm", Locale.getDefault())
+        val d = dateFormat.parse("${date}_$time")
 
         cal.clear()
         cal.time = d
