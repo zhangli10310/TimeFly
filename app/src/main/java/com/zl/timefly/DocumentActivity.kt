@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_document.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 
 /**
  * Created by zhangli on 2018/3/4,23:13<br/>
@@ -32,15 +33,26 @@ class DocumentActivity : AppCompatActivity() {
         loadData()
     }
 
-    private fun loadData() {}
+    private fun loadData() {
 
+        thread {
+            val all = AppDatabase.getInstance(this).documentDao().getAll()
+            mList.clear()
+            mList.addAll(all)
+            runOnUiThread {
+                mAdapter.notifyDataSetChanged()
+            }
+        }
+    }
 
     private fun add() {
-
-        mList.add(0, DocumentItem("3.04",
-                "添加于"+SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(System.currentTimeMillis())))
-        mAdapter.notifyDataSetChanged()
-
+        thread {
+            AppDatabase.getInstance(this)
+                    .documentDao()
+                    .insertOne(DocumentItem(0, "3.04",
+                            "添加于" + SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(System.currentTimeMillis())))
+            loadData()
+        }
     }
 
 }
