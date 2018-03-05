@@ -6,6 +6,17 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
+
+    signingConfigs {
+
+        config {
+            keyAlias 'time'
+            keyPassword '123456'
+            storeFile file('time.jks')
+            storePassword '123456'
+        }
+    }
+
     defaultConfig {
         applicationId "com.zl.timefly"
         minSdkVersion 15
@@ -18,6 +29,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
