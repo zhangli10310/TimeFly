@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DocumentActivity"/>
+        <activity android:name=".DocumentActivity" android:label="记事本"/>
     </application>
 
 </manifest>

@@ -22,4 +22,7 @@ interface DocumentDao {
 
     @Query("DELETE FROM Documents")
     fun deleteAll()
+
+    @Query("DELETE FROM Documents where id=:id")
+    fun deleteOne(id:Int)
 }
